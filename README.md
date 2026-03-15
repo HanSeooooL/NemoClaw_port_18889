@@ -13,9 +13,48 @@ That's it. First run prompts for your NVIDIA API Key (get one from [build.nvidia
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+
-- Docker running ([Colima](https://github.com/abiosoft/colima), Docker Desktop, or native)
-- [OpenShell CLI](https://github.com/NVIDIA/OpenShell) — `pip install 'openshell @ git+https://github.com/NVIDIA/OpenShell.git'`
+- Node.js 20+
+- Docker
+- [OpenShell CLI](https://github.com/NVIDIA/OpenShell)
+
+### Ubuntu 24.04 (fresh install)
+
+```bash
+# Node.js 22 LTS
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Docker
+sudo apt-get install -y docker.io
+sudo usermod -aG docker $USER
+newgrp docker
+
+# OpenShell CLI
+pip install 'openshell @ git+https://github.com/NVIDIA/OpenShell.git'
+
+# NVIDIA Container Toolkit (if you have a GPU)
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+  | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+  | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list > /dev/null
+sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+
+# NemoClaw
+npm install -g nemoclaw
+nemoclaw setup
+```
+
+### macOS
+
+```bash
+brew install colima docker node
+colima start
+pip install 'openshell @ git+https://github.com/NVIDIA/OpenShell.git'
+npm install -g nemoclaw
+nemoclaw setup
+```
 
 ### Deploy to a cloud VM
 
@@ -30,12 +69,11 @@ Requires the [Brev CLI](https://brev.nvidia.com). The deploy script installs Doc
 ### Connect to the sandbox
 
 ```bash
-openshell sandbox connect nemoclaw
-export NVIDIA_API_KEY=nvapi-...
-nemoclaw-start
+nemoclaw connect                # local
+nemoclaw connect my-gpu-box     # remote Brev instance
 ```
 
-### Run OpenClaw
+### Run OpenClaw (inside the sandbox)
 
 ```bash
 openclaw agent --agent main --local -m "your prompt" --session-id s1
