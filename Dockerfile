@@ -105,6 +105,7 @@ config = { \
     'channels': {'defaults': {'configWrites': False}}, \
     'gateway': { \
         'mode': 'local', \
+        'port': 18889, \
         'controlUi': { \
             'allowInsecureAuth': True, \
             'dangerouslyDisableDeviceAuth': True, \
