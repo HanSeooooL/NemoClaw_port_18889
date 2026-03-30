@@ -191,7 +191,7 @@ export async function actionPlan(
     sandbox: {
       image: sandboxCfg.image ?? "openclaw",
       name: sandboxCfg.name ?? "openclaw",
-      forward_ports: sandboxCfg.forward_ports ?? [18789],
+      forward_ports: sandboxCfg.forward_ports ?? [18889],
     },
     inference: {
       provider_type: inferenceCfg.provider_type,
@@ -230,7 +230,7 @@ export async function actionApply(
 
   const sandboxName = sandboxCfg.name ?? "openclaw";
   const sandboxImage = sandboxCfg.image ?? "openclaw";
-  const forwardPorts = sandboxCfg.forward_ports ?? [18789];
+  const forwardPorts = sandboxCfg.forward_ports ?? [18889];
 
   progress(20, "Creating OpenClaw sandbox");
   const createArgs = [

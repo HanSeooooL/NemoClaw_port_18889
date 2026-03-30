@@ -50,7 +50,7 @@ RUN chmod +x /usr/local/bin/nemoclaw-start
 ARG NEMOCLAW_MODEL=nvidia/nemotron-3-super-120b-a12b
 ARG NEMOCLAW_PROVIDER_KEY=nvidia
 ARG NEMOCLAW_PRIMARY_MODEL_REF=nvidia/nemotron-3-super-120b-a12b
-ARG CHAT_UI_URL=http://127.0.0.1:18789
+ARG CHAT_UI_URL=http://127.0.0.1:18889
 ARG NEMOCLAW_INFERENCE_BASE_URL=https://inference.local/v1
 ARG NEMOCLAW_INFERENCE_API=openai-completions
 ARG NEMOCLAW_INFERENCE_COMPAT_B64=e30=
@@ -88,8 +88,8 @@ inference_base_url = os.environ['NEMOCLAW_INFERENCE_BASE_URL']; \
 inference_api = os.environ['NEMOCLAW_INFERENCE_API']; \
 inference_compat = json.loads(base64.b64decode(os.environ['NEMOCLAW_INFERENCE_COMPAT_B64']).decode('utf-8')); \
 parsed = urlparse(chat_ui_url); \
-chat_origin = f'{parsed.scheme}://{parsed.netloc}' if parsed.scheme and parsed.netloc else 'http://127.0.0.1:18789'; \
-origins = ['http://127.0.0.1:18789']; \
+chat_origin = f'{parsed.scheme}://{parsed.netloc}' if parsed.scheme and parsed.netloc else 'http://127.0.0.1:18889'; \
+origins = ['http://127.0.0.1:18889']; \
 origins = list(dict.fromkeys(origins + [chat_origin])); \
 providers = { \
     provider_key: { \

@@ -62,8 +62,8 @@ case "${1:-}" in
   nemoclaw-start | /usr/local/bin/nemoclaw-start) shift ;;
 esac
 NEMOCLAW_CMD=("$@")
-CHAT_UI_URL="${CHAT_UI_URL:-http://127.0.0.1:18789}"
-PUBLIC_PORT=18789
+CHAT_UI_URL="${CHAT_UI_URL:-http://127.0.0.1:18889}"
+PUBLIC_PORT=18889
 OPENCLAW="$(command -v openclaw)" # Resolve once, use absolute path everywhere
 
 # ── Config integrity check ──────────────────────────────────────

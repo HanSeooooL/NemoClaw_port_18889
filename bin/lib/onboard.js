@@ -265,7 +265,7 @@ function getSandboxReuseState(sandboxName) {
 function repairRecordedSandbox(sandboxName) {
   if (!sandboxName) return;
   note(`  [resume] Cleaning up recorded sandbox '${sandboxName}' before recreating it.`);
-  runOpenshell(["forward", "stop", "18789"], { ignoreError: true });
+  runOpenshell(["forward", "stop", "18889"], { ignoreError: true });
   runOpenshell(["sandbox", "delete", sandboxName], { ignoreError: true });
   registry.removeSandbox(sandboxName);
 }
@@ -1526,20 +1526,20 @@ async function preflight() {
   const gatewayReuseState = getGatewayReuseState(gatewayStatus, gwInfo, activeGatewayInfo);
   if (gatewayReuseState === "stale" || gatewayReuseState === "active-unnamed") {
     console.log("  Cleaning up previous NemoClaw session...");
-    runOpenshell(["forward", "stop", "18789"], { ignoreError: true });
+    runOpenshell(["forward", "stop", "18889"], { ignoreError: true });
     runOpenshell(["gateway", "destroy", "-g", GATEWAY_NAME], { ignoreError: true });
     console.log("  ✓ Previous session cleaned up");
   }
 
-  // Required ports — gateway (8080) and dashboard (18789)
+  // Required ports — gateway (8080) and dashboard (18889)
   const requiredPorts = [
     { port: 8080, label: "OpenShell gateway" },
-    { port: 18789, label: "NemoClaw dashboard" },
+    { port: 18889, label: "NemoClaw dashboard" },
   ];
   for (const { port, label } of requiredPorts) {
     const portCheck = await checkPortAvailable(port);
     if (!portCheck.ok) {
-      if ((port === 8080 || port === 18789) && gatewayReuseState === "healthy") {
+      if ((port === 8080 || port === 18889) && gatewayReuseState === "healthy") {
         console.log(`  ✓ Port ${port} already owned by healthy NemoClaw runtime (${label})`);
         continue;
       }
@@ -1779,7 +1779,7 @@ async function createSandbox(gpu, model, provider, preferredInferenceApi = null,
   // --gpu is intentionally omitted. See comment in startGateway().
 
   console.log(`  Creating sandbox '${sandboxName}' (this takes a few minutes on first run)...`);
-  const chatUiUrl = process.env.CHAT_UI_URL || "http://127.0.0.1:18789";
+  const chatUiUrl = process.env.CHAT_UI_URL || "http://127.0.0.1:18889";
   patchStagedDockerfile(stagedDockerfile, model, chatUiUrl, String(Date.now()), provider, preferredInferenceApi);
   // Only pass non-sensitive env vars to the sandbox. NVIDIA_API_KEY is NOT
   // needed inside the sandbox — inference is proxied through the OpenShell
@@ -1865,12 +1865,12 @@ async function createSandbox(gpu, model, provider, preferredInferenceApi = null,
     process.exit(1);
   }
 
-  // Release any stale forward on port 18789 before claiming it for the new sandbox.
+  // Release any stale forward on port 18889 before claiming it for the new sandbox.
   // A previous onboard run may have left the port forwarded to a different sandbox,
   // which would silently prevent the new sandbox's dashboard from being reachable.
-  runOpenshell(["forward", "stop", "18789"], { ignoreError: true });
+  runOpenshell(["forward", "stop", "18889"], { ignoreError: true });
   // Forward dashboard port to the new sandbox
-  runOpenshell(["forward", "start", "--background", "18789", sandboxName], { ignoreError: true });
+  runOpenshell(["forward", "start", "--background", "18889", sandboxName], { ignoreError: true });
 
   // Register only after confirmed ready — prevents phantom entries
   registry.registerSandbox({
@@ -2654,7 +2654,7 @@ async function setupPoliciesWithSelection(sandboxName, options = {}) {
 
 // ── Dashboard ────────────────────────────────────────────────────
 
-const CONTROL_UI_PORT = 18789;
+const CONTROL_UI_PORT = 18889;
 const CONTROL_UI_PATH = "/";
 
 function findOpenclawJsonPath(dir) {
@@ -2730,7 +2730,7 @@ function printDashboard(sandboxName, model, provider, nimContainer = null) {
 
   console.log("");
   console.log(`  ${"─".repeat(50)}`);
-  // console.log(`  Dashboard    http://localhost:18789/`);
+  // console.log(`  Dashboard    http://localhost:18889/`);
   console.log(`  Sandbox      ${sandboxName} (Landlock + seccomp + netns)`);
   console.log(`  Model        ${model} (${providerLabel})`);
   console.log(`  NIM          ${nimLabel}`);

@@ -61,7 +61,7 @@ async function probePortAvailability(port, opts = {}) {
  *   { ok: false, process: string, pid: number|null, reason: string }
  */
 async function checkPortAvailable(port, opts) {
-  const p = port || 18789;
+  const p = port || 18889;
   const o = opts || {};
 
   // ── lsof path ──────────────────────────────────────────────────

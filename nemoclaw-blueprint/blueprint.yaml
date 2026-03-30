@@ -21,7 +21,7 @@ components:
     image: "ghcr.io/nvidia/openshell-community/sandboxes/openclaw:latest"
     name: "openclaw"
     forward_ports:
-      - 18789
+      - 18889
 
   inference:
     profiles:
