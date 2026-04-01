@@ -127,6 +127,8 @@ function runAgentInSandbox(message, sessionId) {
         (l) =>
           !l.startsWith("Setting up NemoClaw") &&
           !l.startsWith("[plugins]") &&
+          !l.startsWith("[gateway]") &&
+          !l.startsWith("[SECURITY") &&
           !l.startsWith("(node:") &&
           !l.includes("NemoClaw ready") &&
           !l.includes("NemoClaw registered") &&
