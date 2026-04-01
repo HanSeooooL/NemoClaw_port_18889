@@ -243,7 +243,8 @@ async function connectGateway() {
   });
 
   ws.addEventListener("error", (event) => {
-    console.error("[gateway] WebSocket error:", event.message || event.type);
+    const msg = /** @type {any} */ (event).message;
+    console.error("[gateway] WebSocket error:", msg || event.type);
   });
 }
 
