@@ -193,9 +193,8 @@ async function connectGateway() {
         if (payload.t === "MESSAGE_CREATE") {
           const msg = payload.d;
 
-          // Ignore own messages and other bots
+          // Ignore own messages
           if (botUser && msg.author.id === botUser.id) break;
-          if (msg.author.bot) break;
 
           const channelId = msg.channel_id;
 
