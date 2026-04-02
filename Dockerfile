@@ -57,6 +57,9 @@ ARG NEMOCLAW_INFERENCE_COMPAT_B64=e30=
 # Unique per build to ensure each image gets a fresh auth token.
 # Pass --build-arg NEMOCLAW_BUILD_ID=$(date +%s) to bust the cache.
 ARG NEMOCLAW_BUILD_ID=default
+# Web search provider API key (optional). Pass via --build-arg at onboard time.
+# Supports: BRAVE_API_KEY. Leave empty to disable web search.
+ARG BRAVE_API_KEY=
 
 # SECURITY: Promote build-args to env vars so the Python script reads them
 # via os.environ, never via string interpolation into Python source code.
@@ -67,7 +70,8 @@ ENV NEMOCLAW_MODEL=${NEMOCLAW_MODEL} \
     CHAT_UI_URL=${CHAT_UI_URL} \
     NEMOCLAW_INFERENCE_BASE_URL=${NEMOCLAW_INFERENCE_BASE_URL} \
     NEMOCLAW_INFERENCE_API=${NEMOCLAW_INFERENCE_API} \
-    NEMOCLAW_INFERENCE_COMPAT_B64=${NEMOCLAW_INFERENCE_COMPAT_B64}
+    NEMOCLAW_INFERENCE_COMPAT_B64=${NEMOCLAW_INFERENCE_COMPAT_B64} \
+    BRAVE_API_KEY=${BRAVE_API_KEY}
 
 WORKDIR /sandbox
 USER sandbox
@@ -99,10 +103,13 @@ providers = { \
         'models': [{**({'compat': inference_compat} if inference_compat else {}), 'id': model, 'name': primary_model_ref, 'reasoning': False, 'input': ['text'], 'cost': {'input': 0, 'output': 0, 'cacheRead': 0, 'cacheWrite': 0}, 'contextWindow': 131072, 'maxTokens': 4096}] \
     } \
 }; \
+brave_api_key = os.environ.get('BRAVE_API_KEY', '').strip(); \
+tools = {'web': {'search': {'enabled': True, 'provider': 'brave', 'apiKey': brave_api_key}, 'fetch': {'enabled': True}}} if brave_api_key else {}; \
 config = { \
     'agents': {'defaults': {'model': {'primary': primary_model_ref}}}, \
     'models': {'mode': 'merge', 'providers': providers}, \
     'channels': {'defaults': {'configWrites': False}}, \
+    **(({'tools': tools}) if tools else {}), \
     'gateway': { \
         'mode': 'local', \
         'port': 18889, \
