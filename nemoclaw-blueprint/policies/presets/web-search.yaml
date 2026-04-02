@@ -18,7 +18,7 @@ network_policies:
           - allow: { method: GET, path: "/**" }
           - allow: { method: POST, path: "/**" }
     binaries:
-      - { path: /usr/local/bin/node }
+      - { path: /usr/local/bin/openclaw }
 
   perplexity:
     name: perplexity
@@ -32,7 +32,7 @@ network_policies:
           - allow: { method: GET, path: "/**" }
           - allow: { method: POST, path: "/**" }
     binaries:
-      - { path: /usr/local/bin/node }
+      - { path: /usr/local/bin/openclaw }
 
   grok:
     name: grok
@@ -46,7 +46,7 @@ network_policies:
           - allow: { method: GET, path: "/**" }
           - allow: { method: POST, path: "/**" }
     binaries:
-      - { path: /usr/local/bin/node }
+      - { path: /usr/local/bin/openclaw }
 
   gemini:
     name: gemini
@@ -60,7 +60,7 @@ network_policies:
           - allow: { method: GET, path: "/**" }
           - allow: { method: POST, path: "/**" }
     binaries:
-      - { path: /usr/local/bin/node }
+      - { path: /usr/local/bin/openclaw }
 
   kimi:
     name: kimi
@@ -74,4 +74,4 @@ network_policies:
           - allow: { method: GET, path: "/**" }
           - allow: { method: POST, path: "/**" }
     binaries:
-      - { path: /usr/local/bin/node }
+      - { path: /usr/local/bin/openclaw }
