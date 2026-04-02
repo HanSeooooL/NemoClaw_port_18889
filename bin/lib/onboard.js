@@ -618,6 +618,11 @@ function patchStagedDockerfile(dockerfilePath, model, chatUiUrl, buildId = Strin
     /^ARG NEMOCLAW_BUILD_ID=.*$/m,
     `ARG NEMOCLAW_BUILD_ID=${buildId}`
   );
+  const braveApiKey = (process.env.BRAVE_API_KEY || "").trim();
+  dockerfile = dockerfile.replace(
+    /^ARG BRAVE_API_KEY=.*$/m,
+    `ARG BRAVE_API_KEY=${braveApiKey}`
+  );
   fs.writeFileSync(dockerfilePath, dockerfile);
 }
 
